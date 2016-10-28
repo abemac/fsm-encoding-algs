@@ -1,21 +1,22 @@
-g++ -std=c++11 -Wall -g shortest_path/main.cpp  -o sp
-shortest_path/main.cpp: In function ‘int main()’:
-shortest_path/main.cpp:28:12: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+g++ -std=c++11 -Wall -g -c ec.cpp
+ec.cpp: In member function ‘void EC::print_elem_cycles()’:
+ec.cpp:8:12: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
    while (s < A.size()){
             ^
-shortest_path/main.cpp:31:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+ec.cpp:11:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
      for (int i =0;i<A.size();++i){
                     ^
-shortest_path/main.cpp:34:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+ec.cpp:14:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
      for (int i =0;i<A.size();++i){
                     ^
-shortest_path/main.cpp: In function ‘void init(const string&)’:
-shortest_path/main.cpp:117:11: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+ec.cpp: In member function ‘void EC::init(const string&)’:
+ec.cpp:113:11: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
      for(;i<str.size();i++){
            ^
-shortest_path/main.cpp:118:26: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+ec.cpp:114:26: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
        if(str[i]==',' || i==str.size()-1){
                           ^
-shortest_path/main.cpp:127:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+ec.cpp:124:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
     for(int i = 0;i<A.size();i++){
                    ^
+g++ -std=c++11 -Wall -g main.cpp ec.o -o ec
