@@ -1,0 +1,8 @@
+g++ -std=c++11 -Wall -g main.cpp  -o re
+main.cpp: In function ‘void count()’:
+main.cpp:102:16: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for(int i=0;i<odd_cycles.size();i++){
+                ^
+main.cpp:103:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for(int j=0;j<odd_cycles[i].size()-1;j++){
+                  ^
