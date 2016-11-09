@@ -4,7 +4,7 @@
 
 #include "re.h"
 
-void RE::remove_edges(){
+void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size){
   std::vector<char> a;
   a.push_back('0');
   a.push_back('1');
@@ -45,7 +45,7 @@ void RE::remove_edges(){
   count();
   std::sort(cells.begin(),cells.end(),compareByCount);
   for(Cell* c : cells){
-    std::cout<<c->count<<" ("<<c->from-48<<"->"<<c->to-48<<"),"<<"(";
+    std::cout<<c->count<<" ("<<c->from-48<<" ↔ "<<c->to-48<<"),"<<"(";
     for(int i : c->list){
       std::cout<<i<<" ";
     }

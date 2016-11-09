@@ -29,7 +29,7 @@ private:
 
 
 public:
-  void remove_edges();
+  void remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size);
 
 };
 
