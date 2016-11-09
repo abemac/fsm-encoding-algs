@@ -7,7 +7,7 @@ EC::EC(const std::vector<std::list<int> > &A_){
 
 
 
-void EC::print_elem_cycles(){
+void EC::calc_elem_cycles(){
 
   s=0;
 

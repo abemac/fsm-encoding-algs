@@ -1,4 +1,4 @@
-g++ -std=c++11 -Wall -g main.cpp ec.o -o run
+g++ -std=c++11 -Wall -g main.cpp ec.o re.o -o run
 main.cpp: In function ‘void read_file(std::__cxx11::string&)’:
 main.cpp:42:11: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
      for(;i<str.size();i++){

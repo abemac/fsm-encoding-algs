@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "ec.h"
+#include "re.h"
 #include <fstream>
 #include <iostream>
 #include <list>
@@ -15,7 +16,9 @@ int main(int argc, char* argv[]){
   read_file(filePath);
 
   EC ec = EC(adjList);
-  ec.print_elem_cycles();
+  ec.calc_elem_cycles();
+  RE re;
+  re.remove_edges();
 
 
 

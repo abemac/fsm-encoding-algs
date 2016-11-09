@@ -18,7 +18,7 @@ private:
   int s;
 
   std::list<int> stack;
-  std::vector<std::vector<int>* > cycles;
+
 
   void init();
   void UNBLOCK(int u);
@@ -29,9 +29,9 @@ private:
 
 
 public:
-  void print_elem_cycles();
+  void calc_elem_cycles();
   EC(const std::vector<std::list<int> > & A_);
-
+  std::vector<std::vector<int>* > cycles;
 
 
 };
