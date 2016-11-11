@@ -4,38 +4,22 @@
 
 #include "re.h"
 
-void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size){
-  std::vector<char> a;
-  a.push_back('0');
-  a.push_back('1');
-  a.push_back('4');
-  a.push_back('5');
-  a.push_back('6');
-  a.push_back('2');
-  a.push_back('3');
-  a.push_back('0');
+void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size){
 
-  std::vector<char> b;
-  b.push_back('1');
-  b.push_back('2');
-  b.push_back('6');
-  b.push_back('5');
-  b.push_back('4');
-  b.push_back('1');
+  for(std::vector<int>* v : odd_cycles_){
+    std::vector<char> temp;
+    for(int i : *v){
+      temp.push_back(i+48);
+    }
+    odd_cycles.push_back(temp);
+  }
 
-  std::vector<char> c;
-  c.push_back('2');
-  c.push_back('5');
-  c.push_back('6');
-  c.push_back('2');
 
-  odd_cycles.push_back(a);
-  odd_cycles.push_back(b);
-  odd_cycles.push_back(c);
 
-  counts.resize(7);
+
+  counts.resize(size);
   for(std::vector<Cell*>& c: counts){
-    c.resize(7);
+    c.resize(size);
   }
   for(std::vector<Cell*>& c: counts){
     for(Cell*& cell : c){
@@ -52,9 +36,9 @@ void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size
     std::cout<<"\b)"<<std::endl;
 
   }
-  remove();
+  remove(odd_cycles.size());
 
- std::cout<<"modified odd cycles:"<<std::endl;
+  std::cout<<"modified odd cycles:"<<std::endl;
   for(auto a : odd_cycles){
     for(auto i : a){
       if(i=='X'){
@@ -70,10 +54,13 @@ void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size
 
 
 
-void RE::remove(){
-    bool deleted[]={false,false,false};
+void RE::remove(int size){
+    std::vector<bool> deleted;
+    for(int b=0;b<size;b++){
+      deleted.push_back(false);
+    }
     int i=0;
-    while((!deleted[0] || !deleted[1] || !deleted[2])){
+    while(anyFalse(deleted)){
       for(int k : cells[i]->list){
         bool deleted2=false;
         for(auto itr=odd_cycles[k].begin();!deleted2;++itr){
@@ -88,6 +75,16 @@ void RE::remove(){
       ++i;
     }
 }
+
+bool RE::anyFalse(const std::vector<bool> & bools){
+  for(bool b : bools){
+    if(b==false){
+      return true;
+    }
+  }
+  return false;
+}
+
 
 void RE::count(){
   for(int i=0;i<odd_cycles.size();i++){

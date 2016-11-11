@@ -25,11 +25,12 @@ private:
 
 
   void count();
-  void remove();
+  void remove(int size);
+  bool anyFalse(const std::vector<bool> & bools);
 
 
 public:
-  void remove_edges(const std::vector<std::vector<int>* >& odd_cycles,int size);
+  void remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size);
 
 };
 

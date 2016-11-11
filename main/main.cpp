@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
   EC ec = EC(adjList);
   ec.calc_elem_cycles();
   RE re;
-  re.remove_edges();
+  re.remove_edges(ec.cycles,adjList.size());
 
 
 

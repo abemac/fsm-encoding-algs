@@ -30,7 +30,6 @@ void EC::calc_elem_cycles(){
     }
     std::cout<<std::endl;
   }
-
   simpflipy_cycles();
   std::cout<<"simplified"<<std::endl;
   for(std::vector<int>* v : cycles){
@@ -122,22 +121,31 @@ void EC::simpflipy_cycles(){
   bool same=false;
   for(auto i=cycles.begin();i!=cycles.end();++i){
     for(auto j=cycles.begin();j!=cycles.end();){
-      if(i!=j && ((*i)->size()) == ((*j)->size())){
+      if((i!=j) && (((*i))->size() == ((*j))->size())){
+        //std::cout<<"here"<<std::endl;
         same=true;
         int k=0;
         int l=(*i)->size()-1;
         std::vector<int> v1 = *(*i);
         std::vector<int> v2=*(*j);
-        //std::cout<<"here"<<std::endl;
-        while(same && k<l){
+        // for(int asdf : v1){
+        //   std::cout<<asdf<<" ";
+        // }
+        // std::cout<<std::endl;
+        // for(int qwerty : v2){
+        //   std::cout<<qwerty<<" ";
+        // }
+        // std::cout<<std::endl;
+        while(same && l>=0){
+          //std::cout<<v1[k]<<" "<<v2[l]<<std::endl;
           if(v1[k]!=v2[l]){
             same=false;
           }
           ++k;--l;
         }
+        // std::cout<<same<<std::endl;
         if(same){
           j=cycles.erase(j);
-
         }
 
       }
