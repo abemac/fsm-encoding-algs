@@ -20,6 +20,12 @@ int main(int argc, char* argv[]){
   RE re;
   re.remove_edges(ec.cycles,adjList.size());
 
+  //re.odd_cycles to get odd cycles now
+  std::cout<<"deleted edges"<<std::endl;
+  for(auto p : re.deleted_edges){
+    std::cout<<p->first<<" "<<p->second<<std::endl;
+  }
+
 
 
 }

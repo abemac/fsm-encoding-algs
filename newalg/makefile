@@ -2,7 +2,7 @@
 OBJS =ec.o re.o
 CC = g++ -std=c++11
 DEBUG = -g
-LFLAGS = -Wall $(DEBUG)
+LFLAGS = $(DEBUG)
 CFLAGS = $(LFLAGS) -c
 
 output: main.cpp $(OBJS)

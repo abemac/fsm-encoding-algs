@@ -60,7 +60,19 @@ void RE::remove(int size){
       deleted.push_back(false);
     }
     int i=0;
+    bool added=false;
     while(anyFalse(deleted)){
+      bool newEdgeFound=false;
+      while(!newEdgeFound){
+        for(int k : cells[i]->list){
+          if(deleted[k]==false){
+            newEdgeFound=true;
+          }
+        }
+        if(!newEdgeFound){
+          ++i;
+        }
+      }
       for(int k : cells[i]->list){
         bool deleted2=false;
         for(auto itr=odd_cycles[k].begin();!deleted2;++itr){
@@ -69,10 +81,19 @@ void RE::remove(int size){
             deleted2=true;
             deleted[k]=true;
             odd_cycles[k].insert(std::next(itr),'X');
+            if(added==false){
+              added=true;
+              std::pair<int,int>* pair= new std::pair<int,int>();
+              (pair->first)=cells[i]->from-48;
+              (pair->second)=cells[i]->to-48;
+              deleted_edges.push_back(pair);
+            }
           }
         }
       }
+
       ++i;
+      added=false;
     }
 }
 

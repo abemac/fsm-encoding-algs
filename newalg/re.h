@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iterator>
+#include <tuple>
 
 class RE{
 
@@ -19,7 +20,7 @@ private:
     return (c1->count)>(c2->count);
   }
 
-  std::vector<std::vector <char> > odd_cycles;
+
   std::vector<std::vector<Cell*> > counts;
   std::vector<Cell*> cells;
 
@@ -31,6 +32,8 @@ private:
 
 public:
   void remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size);
+  std::vector<std::vector <char> > odd_cycles;
+  std::vector<std::pair<int,int>* > deleted_edges;
 
 };
 
