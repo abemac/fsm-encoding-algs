@@ -32,7 +32,6 @@ Graph::Graph(int size){
 
 void Graph::encode(){
   createCodeVector();
-  std::cout<<numFlipFlops<<std::endl;
   return;
   for(Node * v : vertices){
     v->visited=false;
@@ -64,6 +63,7 @@ void Graph::encode(){
   vertices[loc]->visited=true;
   allCodes[0]->used=true;
 
+  //add outer loop in case disconnected
   while(queue.size()!=0){
     Node * n = queue.front();
 
@@ -81,6 +81,7 @@ void Graph::encode(){
         queue.push_back(n3);
       }
     }
+    //sort by weight then add all to queue
 
     queue.pop_front();
   }
@@ -105,10 +106,12 @@ unsigned long long Graph::getBestNextEncoding(unsigned long long current_enc){
 void Graph::createCodeVector(){
   numFlipFlops=0;
   unsigned long long count=1;
+
   while(count<vertices.size()){
     numFlipFlops++;
     count<<=1;//multiply by two
   }
+  //TODO check here if FF needs to be increased
 
   usedCodes=std::vector<bool>(count);
   for(unsigned long long j=0;j<usedCodes.size();j++){
@@ -151,18 +154,18 @@ void Graph::createCodeVector(){
     }
     codeStructs.push_back(codeLevel_current);
   }
-
-  for(std::vector<CodeStruct*> * v : codeStructs){
-    for(CodeStruct* cl: *v ){
-      for(Code * c : cl->codes){
-
-        std::bitset<7> b (c->val);
-        std::cout<<b<<" ";
-      }
-      std::cout<<std::endl;
-    }
-    std::cout<<std::endl;
-  }
+  //
+  // for(std::vector<CodeStruct*> * v : codeStructs){
+  //   for(CodeStruct* cl: *v ){
+  //     for(Code * c : cl->codes){
+  //
+  //       std::bitset<7> b (c->val);
+  //       std::cout<<b<<" ";
+  //     }
+  //     std::cout<<std::endl;
+  //   }
+  //   std::cout<<std::endl;
+  // }
 
 
 }
