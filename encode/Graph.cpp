@@ -22,13 +22,7 @@ Graph::Graph(int size){
   }
 
 
-
-
 }
-
-
-
-
 
 void Graph::encode(){
   createCodeVector();
