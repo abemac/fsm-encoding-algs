@@ -1,18 +1,10 @@
 
-#include <string>
-#include <vector>
-#include "ec.h"
-#include "re.h"
-#include <fstream>
-#include <iostream>
-#include <list>
-std::vector<std::list<int> > adjList;
 
 
-void read_file(std::string& filePath);
+#include "etr.h"
 
-int main(int argc, char* argv[]){
-  std::string filePath= argv[1];
+
+void ETR::find_edges(std::string filePath){
   read_file(filePath);
 
   EC ec = EC(adjList);
@@ -37,7 +29,7 @@ int main(int argc, char* argv[]){
 
 
 
-void read_file(std::string& filePath){
+void ETR::read_file(std::string& filePath){
   std::ifstream FILE(filePath);
   std::string str;
 
