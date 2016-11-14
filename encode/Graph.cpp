@@ -23,6 +23,8 @@ Graph::Graph(int size){
 
 
 }
+//new method remove edges (go through vertices, deleted only from par,adj lists)
+//don't delete vertices themselves
 
 void Graph::encode(){
   createCodeVector();
