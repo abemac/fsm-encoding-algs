@@ -81,16 +81,18 @@ void Graph::encode(){
       for(int t : weights[n->val]){
         sum+=t;
       }
-      std::cout<<sum<<std::endl;
+      //std::cout<<sum<<std::endl;
     }
     //sort by weight then add all to queue
-    return;
+    for(int i = to_add.size()-1;i>=0;i--){
+      queue.push_back(to_add[i]);
+    }
     queue.pop_front();
   }
 
-  for(Node * n : vertices){
-    std::cout<<n->enc<<std::endl;
-  }
+  // for(Node * n : vertices){
+  //   std::cout<<n->enc<<std::endl;
+  // }
 
 }
 
@@ -117,7 +119,23 @@ void Graph::createCodeVector(){
     numFlipFlops++;
     count<<=1;//multiply by two
   }
-  //TODO check here if FF needs to be increased
+  int max_weight=0;
+  for(int i=0;i<weights.size();i++){
+    int tmp_weight=0;
+    for(int t : weights[i]){
+      tmp_weight+=t;
+    }
+
+    if(tmp_weight>max_weight){
+      max_weight=tmp_weight;
+    }
+  }
+  // std::cout<<max_weight<<std::endl;
+  // std::cout<<numFlipFlops<<std::endl;
+  if(max_weight>numFlipFlops){
+    count<<=(max_weight-numFlipFlops);
+    numFlipFlops=max_weight;
+  }
 
   usedCodes=std::vector<bool>(count);
   for(unsigned long long j=0;j<usedCodes.size();j++){
@@ -160,18 +178,18 @@ void Graph::createCodeVector(){
     }
     codeStructs.push_back(codeLevel_current);
   }
-  //
-  // for(std::vector<CodeStruct*> * v : codeStructs){
-  //   for(CodeStruct* cl: *v ){
-  //     for(Code * c : cl->codes){
-  //
-  //       std::bitset<7> b (c->val);
-  //       std::cout<<b<<" ";
-  //     }
-  //     std::cout<<std::endl;
-  //   }
-  //   std::cout<<std::endl;
-  // }
+
+  for(std::vector<CodeStruct*> * v : codeStructs){
+    for(CodeStruct* cl: *v ){
+      for(Code * c : cl->codes){
+
+        std::bitset<4> b (c->val);
+        std::cout<<b<<" ";
+      }
+      std::cout<<std::endl;
+    }
+    std::cout<<std::endl;
+  }
 
 
 }
