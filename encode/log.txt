@@ -1,22 +1,17 @@
 g++ -std=c++11 -Wall -g -c Graph.cpp
-
-            ^
-Graph.cpp: In member function ‘void Graph::encode()’:
-Graph.cpp:63:18: error: ‘struct Graph::Node’ has no member named ‘enc1’
-   vertices[loc]->enc1=0;
-                  ^
-
-Graph.cpp:72:13: error: ‘struct Graph::Node’ has no member named ‘enc1’
-         n2->enc1 = getBestNextEncoding(n->enc1);
-             ^
-Graph.cpp:72:43: error: ‘struct Graph::Node’ has no member named ‘enc1’
-         n2->enc1 = getBestNextEncoding(n->enc1);
-
-Graph.cpp:79:13: error: ‘struct Graph::Node’ has no member named ‘enc1’
-         n3->enc1 = getBestNextEncoding(n->enc1);
-             ^
-Graph.cpp:79:43: error: ‘struct Graph::Node’ has no member named ‘enc1’
-         n3->enc1 = getBestNextEncoding(n->enc1);
-                                           ^
+In file included from Graph.cpp:1:0:
+Graph.h: In member function ‘void Graph::sortByWeight(std::vector<Graph::Node*>&)’:
+Graph.h:27:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for(int i =0;i<v.size();i++){
+                   ^
+Graph.h:33:5: error: ‘cout’ is not a member of ‘std’
+     std::cout<<"here"<<std::endl;
+     ^
+Graph.h:33:24: error: ‘endl’ is not a member of ‘std’
+     std::cout<<"here"<<std::endl;
+                        ^
+Graph.h:34:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for(int i =1;i<v.size();i++){
+                   ^
 makefile:10: recipe for target 'Graph.o' failed
 make: *** [Graph.o] Error 1

@@ -8,7 +8,7 @@
 #include "Graph.h"
 #include "Path.h"
 int main(){
-  Graph g = Graph(10);
+  Graph g = Graph(7);
   g.build_test_graph();
   g.encode();
 

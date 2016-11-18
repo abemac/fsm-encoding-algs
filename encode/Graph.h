@@ -4,7 +4,8 @@
 #include "Path.h"
 #include <vector>
 #include <set>
-
+#include <algorithm>
+#include <iostream>
 class Graph{
 
 public:
@@ -20,6 +21,30 @@ public:
     Node(int val_){val=val_;}
 
   };
+
+
+  void sortByWeight(std::vector<Node*>& v){
+    std::vector<int> weight_sum(v.size());
+    for(int i =0;i<v.size();i++){
+      for(int t : weights[v[i]->val]){
+        weight_sum[i]+=t;
+      }
+    }
+
+
+    for(int i =1;i<v.size();i++){
+      int t=i;
+      while(weight_sum[t] < weight_sum[t-1] && t!=0){
+        Node * tmp = v[t];
+        v[t]=v[t-1];
+        v[t-1]=tmp;
+        int tmp_weight=weight_sum[t];
+        weight_sum[t]=weight_sum[t-1];
+        weight_sum[t-1]=tmp_weight;
+        t--;
+      }
+    }
+  }
 
   void insertEdge(int startVal,int endVal);
 

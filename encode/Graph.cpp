@@ -1,6 +1,5 @@
 #include "Graph.h"
 #include <fstream>
-#include <iostream>
 #include <list>
 #include <limits>
 #include <string>
@@ -28,7 +27,6 @@ Graph::Graph(int size){
 
 void Graph::encode(){
   createCodeVector();
-  return;
   for(Node * v : vertices){
     v->visited=false;
   }
@@ -62,24 +60,36 @@ void Graph::encode(){
   //add outer loop in case disconnected
   while(queue.size()!=0){
     Node * n = queue.front();
-
+    std::vector<Node*> to_add;
     for(Node* n2 : n->adj){
       if(n2->visited==false){
         n2->enc = getBestNextEncoding(n->enc);
         n2->visited =true;
-        queue.push_back(n2);
+        to_add.push_back(n2);
       }
     }
     for(Node* n3 : n->par){
       if(n3->visited==false){
         n3->enc = getBestNextEncoding(n->enc);
         n3->visited =true;
-        queue.push_back(n3);
+        to_add.push_back(n3);
       }
     }
+    sortByWeight(to_add);
+    for(Node * n : to_add){
+      int sum=0;
+      for(int t : weights[n->val]){
+        sum+=t;
+      }
+      std::cout<<sum<<std::endl;
+    }
     //sort by weight then add all to queue
-
+    return;
     queue.pop_front();
+  }
+
+  for(Node * n : vertices){
+    std::cout<<n->enc<<std::endl;
   }
 
 }
@@ -169,39 +179,23 @@ void Graph::createCodeVector(){
 
 void Graph::build_test_graph(){
   insertEdge(0,1);
+  insertEdge(0,3);
+  insertEdge(1,0);
   insertEdge(1,2);
+  insertEdge(1,4);
   insertEdge(2,1);
-  insertEdge(1,9);
-  insertEdge(9,2);
   insertEdge(2,3);
-  insertEdge(3,5);
-  insertEdge(3,4);
+  insertEdge(2,5);
+  insertEdge(2,6);
+  insertEdge(3,0);
+  insertEdge(3,2);
   insertEdge(4,1);
-  insertEdge(4,8);
+  insertEdge(4,5);
+  insertEdge(5,2);
   insertEdge(5,4);
-  insertEdge(5,7);
   insertEdge(5,6);
-  insertEdge(6,1);
-  insertEdge(7,1);
-  insertEdge(8,7);
-
-  //test graph
-  weights[0][1]=1;
-  weights[1][9]=5;
-  weights[9][2]=5;
-  weights[1][2]=9;
-  weights[2][1]=1;
-  weights[2][3]=13;
-  weights[3][5]=8;
-  weights[3][4]=5;
-  weights[5][4]=2;
-  weights[5][6]=1;
-  weights[5][7]=5;
-  weights[4][8]=3;
-  weights[8][7]=3;
-  weights[4][1]=4;
-  weights[6][1]=1;
-  weights[7][1]=8;
+  insertEdge(6,2);
+  insertEdge(6,5);
 
 
 }
@@ -224,5 +218,7 @@ void Graph::insertEdge(int startVal, int endVal){
   (ns->adj).push_back(ne);
   (ne->par).push_back(ns);
 
+  //temp
+  weights[startVal][endVal]=1;
 
 }
