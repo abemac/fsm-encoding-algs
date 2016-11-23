@@ -22,8 +22,41 @@ Graph::Graph(int size){
 
 
 }
-//new method remove edges (go through vertices, deleted only from par,adj lists)
-//don't delete vertices themselves
+Graph::Graph(const std::vector<std::list<int> >& adjList){
+  vertices = std::vector<Node*>(adjList.size());
+  for(unsigned int i =0; i< vertices.size();i++){
+    vertices[i]=nullptr;
+  }
+
+  weights = std::vector< std::vector<int> >(adjList.size());
+  for(unsigned int i=0;i<weights.size();i++){
+    weights[i] = std::vector<int>(adjList.size());
+    for(unsigned int j =0;j<weights[i].size();j++){
+      weights[i][j] =0; //FOR NOW
+    }
+  }
+
+  std::vector<std::vector<bool> > inserted;
+  for(int i=0;i<adjList.size();i++){
+    inserted.push_back(std::vector<bool>());
+    for(int j=0;j<adjList.size();j++){
+      inserted[i].push_back(false);
+    }
+  }
+
+  for(int i=0;i<adjList.size();i++){
+    for(int adj : adjList[i]){
+      if(!inserted[i][adj]){
+        inserted[i][adj]=true;
+        inserted[adj][i]=true;
+        insertEdge(i,adj);
+        insertEdge(adj,i);
+      }
+    }
+  }
+
+
+}
 
 void Graph::encode(){
   createCodeVector();
@@ -68,13 +101,13 @@ void Graph::encode(){
         to_add.push_back(n2);
       }
     }
-    for(Node* n3 : n->par){
-      if(n3->visited==false){
-        n3->enc = getBestNextEncoding(n->enc);
-        n3->visited =true;
-        to_add.push_back(n3);
-      }
-    }
+    // for(Node* n3 : n->par){
+    //   if(n3->visited==false){
+    //     n3->enc = getBestNextEncoding(n->enc);
+    //     n3->visited =true;
+    //     to_add.push_back(n3);
+    //   }
+    // }
     sortByWeight(to_add);
     for(Node * n : to_add){
       int sum=0;
@@ -90,9 +123,9 @@ void Graph::encode(){
     queue.pop_front();
   }
 
-  // for(Node * n : vertices){
-  //   std::cout<<n->enc<<std::endl;
-  // }
+  for(Node * n : vertices){
+    std::cout<<n->enc<<std::endl;
+  }
 
 }
 
@@ -179,21 +212,47 @@ void Graph::createCodeVector(){
     codeStructs.push_back(codeLevel_current);
   }
 
-  for(std::vector<CodeStruct*> * v : codeStructs){
-    for(CodeStruct* cl: *v ){
-      for(Code * c : cl->codes){
-
-        std::bitset<4> b (c->val);
-        std::cout<<b<<" ";
-      }
-      std::cout<<std::endl;
-    }
-    std::cout<<std::endl;
-  }
+  // for(std::vector<CodeStruct*> * v : codeStructs){
+  //   for(CodeStruct* cl: *v ){
+  //     for(Code * c : cl->codes){
+  //
+  //       std::bitset<4> b (c->val);
+  //       std::cout<<b<<" ";
+  //     }
+  //     std::cout<<std::endl;
+  //   }
+  //   std::cout<<std::endl;
+  // }
 
 
 }
 
+void Graph::remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges){
+  for(std::pair<int,int>* pp : deleted_edges){
+    int from = pp->first;
+    int to = pp->second;
+    for(auto itr = vertices[from]->adj.begin();itr!=vertices[from]->adj.end();){
+
+
+      if((*itr)->val == to){
+        std::cout<<"erased "<< from<<(*itr)->val<<std::endl;
+        itr=vertices[from]->adj.erase(itr);
+
+      }else{
+        ++itr;
+      }
+    }
+    for(auto itr = vertices[to]->adj.begin();itr!=vertices[to]->adj.end();){
+      if((*itr)->val == from){
+        std::cout<<"erased "<< to<<(*itr)->val<<std::endl;
+        itr=vertices[to]->adj.erase(itr);
+
+      }else{
+        ++itr;
+      }
+    }
+  }
+}
 
 void Graph::build_test_graph(){
   insertEdge(0,1);
@@ -234,9 +293,70 @@ void Graph::insertEdge(int startVal, int endVal){
   }
 
   (ns->adj).push_back(ne);
-  (ne->par).push_back(ns);
+  //(ne->par).push_back(ns);
 
   //temp
   weights[startVal][endVal]=1;
+
+}
+
+void Graph::sortByWeight(std::vector<Node*>& v){
+  std::vector<int> weight_sum(v.size());
+  for(int i =0;i<v.size();i++){
+    for(int t : weights[v[i]->val]){
+      weight_sum[i]+=t;
+    }
+  }
+
+
+  for(int i =1;i<v.size();i++){
+    int t=i;
+    while(weight_sum[t] < weight_sum[t-1] && t!=0){
+      Node * tmp = v[t];
+      v[t]=v[t-1];
+      v[t-1]=tmp;
+      int tmp_weight=weight_sum[t];
+      weight_sum[t]=weight_sum[t-1];
+      weight_sum[t-1]=tmp_weight;
+      t--;
+    }
+  }
+}
+
+void Graph::write_to_dot_result(){
+  std::ofstream FILE;
+  std::string path ="result.dot";
+  FILE.open(path);
+  FILE<<"graph fsm {\n";
+  std::vector< std::vector<bool> > added;
+  for(int k=0;k<vertices.size();k++){
+    added.push_back(std::vector<bool>());
+    for(int i=0;i<vertices.size();i++){
+      added[k].push_back(false);
+    }
+  }
+  for(Node* n : vertices){
+    for(Node* adj : n->adj){
+      if(added[n->val][adj->val]==false){
+        added[n->val][adj->val]=true;
+        added[adj->val][n->val]=true;
+        FILE<<"\""<<(n->val)<<"\\n(";
+        for(int i = numFlipFlops-1; i>=0;i--){
+          unsigned int x = ((n->enc) & (1<<i))>>i;
+          FILE<<x;
+        }
+        FILE<<")\"--\""<<adj->val<<"\\n(";
+        for(int i = numFlipFlops-1; i>=0;i--){
+          unsigned int x = ((adj->enc) & (1<<i))>>i;
+          FILE<<x;
+        }
+        FILE<<")\";\n";
+    }
+
+
+    }
+  }
+  FILE<<"}";
+  FILE.close();
 
 }

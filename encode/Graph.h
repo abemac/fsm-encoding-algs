@@ -6,12 +6,13 @@
 #include <set>
 #include <algorithm>
 #include <iostream>
+#include <list>
 class Graph{
 
 public:
 
   Graph(int size);
-
+  Graph(const std::vector<std::list<int> >& adjList);
   struct Node {
     int val;
     std::vector<Node*> adj;
@@ -23,34 +24,14 @@ public:
   };
 
 
-  void sortByWeight(std::vector<Node*>& v){
-    std::vector<int> weight_sum(v.size());
-    for(int i =0;i<v.size();i++){
-      for(int t : weights[v[i]->val]){
-        weight_sum[i]+=t;
-      }
-    }
-
-
-    for(int i =1;i<v.size();i++){
-      int t=i;
-      while(weight_sum[t] < weight_sum[t-1] && t!=0){
-        Node * tmp = v[t];
-        v[t]=v[t-1];
-        v[t-1]=tmp;
-        int tmp_weight=weight_sum[t];
-        weight_sum[t]=weight_sum[t-1];
-        weight_sum[t-1]=tmp_weight;
-        t--;
-      }
-    }
-  }
+  void sortByWeight(std::vector<Node*>& v);
 
   void insertEdge(int startVal,int endVal);
 
   void build_test_graph();
   void encode();
-
+  void remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges);
+  void write_to_dot_result();
 
 
 private:

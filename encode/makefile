@@ -4,8 +4,8 @@ DEBUG = -g
 LFLAGS = -Wall $(DEBUG)
 CFLAGS = $(LFLAGS) -c
 
-output: main.cpp $(OBJS)
-		$(CC) $(LFLAGS) main.cpp $(OBJS) -o run
+# output: main.cpp $(OBJS)
+# 		$(CC) $(LFLAGS) main.cpp $(OBJS) -o run
 Graph.o: Graph.h Graph.cpp
 		$(CC) $(CFLAGS) Graph.cpp
 Path.o: Path.h Path.cpp

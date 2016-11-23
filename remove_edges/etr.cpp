@@ -13,8 +13,9 @@ void ETR::find_edges(std::string filePath){
   re.remove_edges(ec.cycles,adjList.size());
 
   //re.odd_cycles to get odd cycles now
+  removed_edges=re.deleted_edges;
   std::cout<<"deleted edges"<<std::endl;
-  for(auto p : re.deleted_edges){
+  for(std::pair<int,int>* p : re.deleted_edges){
     std::cout<<p->first<<" "<<p->second<<std::endl;
   }
 

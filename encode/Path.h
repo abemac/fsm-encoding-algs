@@ -2,7 +2,7 @@
 #define PATH_H
 
 #include <list>
-
+#include <vector>
 class Path{
 public:
   std::list<int> path;
