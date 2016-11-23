@@ -45,7 +45,15 @@ void ETR::read_file(std::string& filePath){
         lasti=i+1;
       }
     }
+    tmp.unique();   //remove duplicates
     adjList.push_back(tmp);
    }
    FILE.close();
+
+
+
+
+
+
+
 }

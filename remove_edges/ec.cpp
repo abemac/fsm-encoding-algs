@@ -12,6 +12,7 @@ void EC::calc_elem_cycles(){
   s=0;
 
   while (s < A.size()){
+    std::cout<<s<<"/"<<A.size()<<std::endl;
     CIRCUIT(s);
     A[s].clear();
     for (int i =0;i<A.size();++i){
