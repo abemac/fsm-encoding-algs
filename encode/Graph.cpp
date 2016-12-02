@@ -90,7 +90,8 @@ void Graph::encode(){
   vertices[loc]->visited=true;
   allCodes[0]->used=true;
 
-  //add outer loop in case disconnected
+  //**********add outer loop in case disconnected
+
   while(queue.size()!=0){
     Node * n = queue.front();
     std::vector<Node*> to_add;
@@ -109,13 +110,6 @@ void Graph::encode(){
     //   }
     // }
     sortByWeight(to_add);
-    for(Node * n : to_add){
-      int sum=0;
-      for(int t : weights[n->val]){
-        sum+=t;
-      }
-      //std::cout<<sum<<std::endl;
-    }
     //sort by weight then add all to queue
     for(int i = to_add.size()-1;i>=0;i--){
       queue.push_back(to_add[i]);

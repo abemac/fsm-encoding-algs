@@ -31,6 +31,8 @@ void EC::calc_elem_cycles(){
     }
     std::cout<<std::endl;
   }
+
+  std::cout<<"simplifying..."<<std::endl;
   simpflipy_cycles();
   std::cout<<"simplified"<<std::endl;
   for(std::vector<int>* v : cycles){
@@ -39,7 +41,7 @@ void EC::calc_elem_cycles(){
     }
     std::cout<<std::endl;
   }
-
+  std::cout<<"done with finding odd cycles."<<std::endl;
 
 }
 
@@ -120,15 +122,18 @@ void EC::init(){
 
 void EC::simpflipy_cycles(){
   bool same=false;
+  int b=0;
   for(auto i=cycles.begin();i!=cycles.end();++i){
+    b++;
+    std::cout<<b<<"/"<<cycles.size()<<std::endl;
     for(auto j=cycles.begin();j!=cycles.end();){
       if((i!=j) && (((*i))->size() == ((*j))->size())){
         //std::cout<<"here"<<std::endl;
         same=true;
         int k=0;
         int l=(*i)->size()-1;
-        std::vector<int> v1 = *(*i);
-        std::vector<int> v2=*(*j);
+        std::vector<int>* v1 = (*i);
+        std::vector<int>* v2=(*j);
         // for(int asdf : v1){
         //   std::cout<<asdf<<" ";
         // }
@@ -139,7 +144,7 @@ void EC::simpflipy_cycles(){
         // std::cout<<std::endl;
         while(same && l>=0){
           //std::cout<<v1[k]<<" "<<v2[l]<<std::endl;
-          if(v1[k]!=v2[l]){
+          if(v1->operator[](k)!=v2->operator[](l)){
             same=false;
           }
           ++k;--l;
