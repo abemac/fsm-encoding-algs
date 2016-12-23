@@ -8,6 +8,7 @@
 #include <iostream>
 #include <list>
 #include <tuple>
+#include <set>
 
 class ETR{
 
@@ -16,6 +17,8 @@ private:
 
 
   void read_file(std::string& filePath);
+  void rm_dups(std::list<int>& tmp,int current_state);
+
 
 public:
   void find_edges(std::string filePath);

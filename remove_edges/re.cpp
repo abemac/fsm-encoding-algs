@@ -7,9 +7,9 @@
 void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size){
 
   for(std::vector<int>* v : odd_cycles_){
-    std::vector<char> temp;
+    std::vector<unsigned int> temp;
     for(int i : *v){
-      temp.push_back(i+48);
+      temp.push_back(i);
     }
     odd_cycles.push_back(temp);
   }
@@ -28,20 +28,21 @@ void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int siz
   }
   count();
   std::sort(cells.begin(),cells.end(),compareByCount);
-  for(Cell* c : cells){
-    std::cout<<c->count<<" ("<<c->from-48<<" ↔ "<<c->to-48<<"),"<<"(";
-    for(int i : c->list){
-      std::cout<<i<<" ";
-    }
-    std::cout<<"\b)"<<std::endl;
-
-  }
+  // for(Cell* c : cells){
+  //   std::cout<<c->count<<" ("<<c->from<<" ↔ "<<c->to<<"),"<<"(";
+  //   for(int i : c->list){
+  //     std::cout<<i<<" ";
+  //   }
+  //   std::cout<<"\b)"<<std::endl;
+  //
+  // }
   remove(odd_cycles.size());
 
+  std::cout<<"\n\nBreaking edges"<<std::endl;
   std::cout<<"modified odd cycles:"<<std::endl;
   for(auto a : odd_cycles){
     for(auto i : a){
-      if(i=='X'){
+      if(i==-1){
         std::cout<<"\033[1;31mX\033[0m ";
       }else{
       std::cout<<i<<" ";
@@ -80,12 +81,12 @@ void RE::remove(int size){
           (*itr)==(cells[i]->to) && (*(std::next(itr)))==(cells[i]->from)){
             deleted2=true;
             deleted[k]=true;
-            odd_cycles[k].insert(std::next(itr),'X');
+            odd_cycles[k].insert(std::next(itr),-1);
             if(added==false){
               added=true;
               std::pair<int,int>* pair= new std::pair<int,int>();
-              (pair->first)=cells[i]->from-48;
-              (pair->second)=cells[i]->to-48;
+              (pair->first)=cells[i]->from;
+              (pair->second)=cells[i]->to;
               deleted_edges.push_back(pair);
             }
           }
@@ -110,14 +111,14 @@ bool RE::anyFalse(const std::vector<bool> & bools){
 void RE::count(){
   for(int i=0;i<odd_cycles.size();i++){
     for(int j=0;j<odd_cycles[i].size()-1;j++){
-      int l=odd_cycles[i][j]-48;
-      int k=odd_cycles[i][j+1]-48;
+      int l=odd_cycles[i][j];
+      int k=odd_cycles[i][j+1];
       if(counts[l][k]==nullptr){
         counts[l][k]=new Cell();
         counts[k][l]=counts[l][k];
         cells.push_back(counts[l][k]);
-        counts[l][k]->from=l+48;
-        counts[l][k]->to=k+48;
+        counts[l][k]->from=l;
+        counts[l][k]->to=k;
 
       }
       counts[l][k]->count++;

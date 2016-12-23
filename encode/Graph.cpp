@@ -117,9 +117,11 @@ void Graph::encode(){
     queue.pop_front();
   }
 
+  std::cout<<"\nEncoding:"<<std::endl;
   for(Node * n : vertices){
-    std::cout<<n->enc<<std::endl;
+    std::cout<<(n->val)<<":"<<n->enc<<std::endl;
   }
+  std::cout<<"("<<numFlipFlops<<" bits)"<<std::endl;
 
 }
 
@@ -155,10 +157,11 @@ void Graph::createCodeVector(){
 
     if(tmp_weight>max_weight){
       max_weight=tmp_weight;
+    //  std::cout<<i<<" "<<max_weight<<std::endl;
     }
   }
-  // std::cout<<max_weight<<std::endl;
-  // std::cout<<numFlipFlops<<std::endl;
+  //  std::cout<<max_weight<<std::endl;
+  //  std::cout<<numFlipFlops<<std::endl;
   if(max_weight>numFlipFlops){
     count<<=(max_weight-numFlipFlops);
     numFlipFlops=max_weight;
@@ -225,9 +228,9 @@ void Graph::remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges)
   for(std::pair<int,int>* pp : deleted_edges){
     int from = pp->first;
     int to = pp->second;
+    weights[from][to]=0;
+    weights[to][from]=0;
     for(auto itr = vertices[from]->adj.begin();itr!=vertices[from]->adj.end();){
-
-
       if((*itr)->val == to){
         std::cout<<"erased "<< from<<(*itr)->val<<std::endl;
         itr=vertices[from]->adj.erase(itr);

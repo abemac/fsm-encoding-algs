@@ -32,7 +32,7 @@ private:
 
 public:
   void remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size);
-  std::vector<std::vector <char> > odd_cycles;
+  std::vector<std::vector <unsigned int> > odd_cycles;
   std::vector<std::pair<int,int>* > deleted_edges;
 
 };

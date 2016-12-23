@@ -10,9 +10,10 @@ EC::EC(const std::vector<std::list<int> > &A_){
 void EC::calc_elem_cycles(){
 
   s=0;
-
+  std::cout<<"\n\nFinding elementary cycles"<<std::endl;
+  std::cout<<"Progress ("<<A.size()-1<<" is done): 0"<<std::endl;
   while (s < A.size()){
-    std::cout<<s<<"/"<<A.size()<<std::endl;
+    std::cout<<"\e[AProgress ("<<A.size()-1<<" is done): "<<s<<std::endl;
     CIRCUIT(s);
     A[s].clear();
     for (int i =0;i<A.size();++i){
@@ -25,23 +26,23 @@ void EC::calc_elem_cycles(){
     ++s;
   }
 
-  for(std::vector<int>* v : cycles){
-    for(int i : *v){
-      std::cout<<i<<" ";
-    }
-    std::cout<<std::endl;
-  }
+  // for(std::vector<int>* v : cycles){
+  //   for(int i : *v){
+  //     std::cout<<i<<" ";
+  //   }
+  //   std::cout<<std::endl;
+  // }
 
   std::cout<<"simplifying..."<<std::endl;
   simpflipy_cycles();
-  std::cout<<"simplified"<<std::endl;
+  std::cout<<"\nodd numbered cycles:"<<std::endl;
   for(std::vector<int>* v : cycles){
     for(int i : *v){
       std::cout<<i<<" ";
     }
     std::cout<<std::endl;
   }
-  std::cout<<"done with finding odd cycles."<<std::endl;
+  std::cout<<"--------------------------------------------------------------------------------"<<std::endl;
 
 }
 
@@ -125,7 +126,7 @@ void EC::simpflipy_cycles(){
   int b=0;
   for(auto i=cycles.begin();i!=cycles.end();++i){
     b++;
-    std::cout<<b<<"/"<<cycles.size()<<std::endl;
+    std::cout<<"\e[Asimplifying ("<<b<<"/"<<cycles.size()<<")"<<std::endl;
     for(auto j=cycles.begin();j!=cycles.end();){
       if((i!=j) && (((*i))->size() == ((*j))->size())){
         //std::cout<<"here"<<std::endl;

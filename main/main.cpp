@@ -15,7 +15,7 @@ int main (int argc, char* argv[]){
   etr.find_edges(filePath);
   std::cout<<std::endl;
 
-  std::cout<<"\nEncoding...\n"<<std::endl;
+  
   Graph g = Graph(etr.adjList);
   g.remove_edges(etr.removed_edges);
   g.encode();
