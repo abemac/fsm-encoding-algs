@@ -23,20 +23,20 @@ int main (int argc, char* argv[]){
   std::string filePath=argv[1];
   readFile(filePath);
 
-  for(auto i : adjList){
-    for(auto j : i){
-      std::cout<<j<<" ";
-    }
-    std::cout<<std::endl;
-  }
+  // for(auto i : adjList){
+  //   for(auto j : i){
+  //     std::cout<<j<<" ";
+  //   }
+  //   std::cout<<std::endl;
+  // }
   to_und();
-  std::cout<<"undirected:"<<std::endl;
-  for(auto i : adjList){
-    for(auto j : i){
-      std::cout<<j<<" ";
-    }
-    std::cout<<std::endl;
-  }
+  //std::cout<<"undirected:"<<std::endl;
+  // for(auto i : adjList){
+  //   for(auto j : i){
+  //     std::cout<<j<<" ";
+  //   }
+  //   std::cout<<std::endl;
+  // }
   filePath.pop_back();
   filePath.pop_back();
   filePath.pop_back();
