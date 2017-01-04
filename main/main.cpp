@@ -2,11 +2,11 @@
 
 
 
-#include "../remove_edges/etr.h"
+#include "remove_edges/etr.h"
 #include <iostream>
 #include <vector>
-#include "../encode/Graph.h"
-#include "../encode/Path.h"
+#include "encode/Graph.h"
+#include "encode/Path.h"
 
 int main (int argc, char* argv[]){
   std::string filePath= argv[1];
@@ -15,7 +15,7 @@ int main (int argc, char* argv[]){
   etr.find_edges(filePath);
   std::cout<<std::endl;
 
-  
+
   Graph g = Graph(etr.adjList);
   g.remove_edges(etr.removed_edges);
   g.encode();

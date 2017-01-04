@@ -1,3 +1,6 @@
-cd ../encode;make;cd ..
-cd remove_edges;make;cd ../main
+cd encode
+make
+cd ../remove_edges
+make
+cd ..
 make
