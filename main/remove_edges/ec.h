@@ -8,7 +8,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-
+#include <stdexcept>
 
 class EC{
 
@@ -26,8 +26,18 @@ private:
   void SAVE_CYCLE();
 
   void simpflipy_cycles();
+  std::vector<std::vector<int>* > bank;
+  std::vector<std::vector<int>* > simp_cycles;
+  int in_bank(std::vector<int>* test);
+  bool equivalent(std::vector<int>* a,std::vector<int>* b);
+  void emptyBank(int start);
   std::vector<int> sums;
+  std::vector<bool> flagged;
   int tmp_sum=0;
+
+  static bool compareBySize(std::vector<int>* a,std::vector<int>* b){
+    return a->size()<b->size();
+  }
 
 
 public:

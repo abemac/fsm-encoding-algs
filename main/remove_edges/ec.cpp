@@ -26,14 +26,16 @@ void EC::calc_elem_cycles(){
     ++s;
   }
 
-  int k=0;
-  for(std::vector<int>* v : cycles){
-    for(int i : *v){
-      std::cout<<i<<" ";
-    }
-    std::cout<<"sum:"<<sums[k]<<std::endl;
-    k++;
-  }
+  std::sort(cycles.begin(),cycles.end(),compareBySize);
+  //  int k=0;
+  // std::cout<<"unsimplified cycles"<<std::endl;
+  // for(std::vector<int>* v : cycles){
+  //   for(int i : *v){
+  //     std::cout<<i<<" ";
+  //   }
+  //   std::cout<<std::endl;
+  //   k++;
+  // }
 
   std::cout<<"simplifying..."<<std::endl;
   simpflipy_cycles();
@@ -129,45 +131,69 @@ void EC::init(){
 }
 
 void EC::simpflipy_cycles(){
-  bool same=false;
-  int b=0;
-  for(auto i=cycles.begin();i!=cycles.end();++i){
-    b++;
-    std::cout<<"\e[Asimplifying ("<<b<<"/"<<cycles.size()<<")"<<std::endl;
-    for(auto j=cycles.begin();j!=cycles.end();){
-      if((i!=j) && (((*i))->size() == ((*j))->size())){
-        //std::cout<<"here"<<std::endl;
-        same=true;
-        int k=0;
-        int l=(*i)->size()-1;
-        std::vector<int>* v1 = (*i);
-        std::vector<int>* v2=(*j);
-        // for(int asdf : v1){
-        //   std::cout<<asdf<<" ";
-        // }
-        // std::cout<<std::endl;
-        // for(int qwerty : v2){
-        //   std::cout<<qwerty<<" ";
-        // }
-        // std::cout<<std::endl;
-        while(same && l>=0){
-          //std::cout<<v1[k]<<" "<<v2[l]<<std::endl;
-          if(v1->operator[](k)!=v2->operator[](l)){
-            same=false;
-          }
-          ++k;--l;
-        }
-        // std::cout<<same<<std::endl;
-        if(same){
-          j=cycles.erase(j);
-        }
 
-      }
-      if(!same){
-        ++j;
+  for(int j=0;j<cycles.size();j++){
+    flagged.push_back(false);
+  }
+  std::vector<std::vector<int>* > simp_cycles;
+  for(int i=0;i<cycles.size();i++){
+    std::cout<<"\e[Asimplifying ("<<i<<"/"<<cycles.size()<<") bank size:"<<bank.size()<<std::endl;
+
+    if(!flagged[i]){
+      int index =in_bank(cycles[i]);
+      if(index==-1){
+        bank.push_back(cycles[i]);
+        flagged[i]=true;
       }else{
-        same=false;
+        simp_cycles.push_back(cycles[i]);
+        flagged[i]=true;
+        bank.erase(bank.begin()+index);
+      }
+    }
+    if(bank.size()>2){
+      emptyBank(0);
+    }
+
+  }
+  cycles=simp_cycles;
+
+}
+void EC::emptyBank(int start){
+  for(int i=start;i<cycles.size();i++){
+    if(!flagged[i]){
+      int index =in_bank(cycles[i]);
+      if(index!=-1){
+        simp_cycles.push_back(cycles[i]);
+        flagged[i]=true;
+        bank.erase(bank.begin()+index);
       }
     }
   }
+  if(bank.size()!=0){
+    throw std::runtime_error("Bank size should be zero");
+  }
+}
+int EC::in_bank(std::vector<int>* test){
+  for(int i=0;i<bank.size();i++){
+    if(equivalent(test,bank[i])){
+      return i;//index in bank
+    }
+  }
+  return -1;//not in bank
+}
+
+bool EC::equivalent(std::vector<int>* a,std::vector<int>* b){
+  if(a->size() != b->size()){
+    return false;
+  }
+  bool same=true;
+  int k=0;
+  int l=b->size()-1;
+  while(same && l>=0){
+    if(a->operator[](k)!=b->operator[](l)){
+      same=false;
+    }
+    ++k;--l;
+  }
+  return same;
 }
