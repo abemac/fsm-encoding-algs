@@ -232,7 +232,7 @@ void Graph::remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges)
     weights[to][from]=0;
     for(auto itr = vertices[from]->adj.begin();itr!=vertices[from]->adj.end();){
       if((*itr)->val == to){
-        std::cout<<"erased "<< from<<(*itr)->val<<std::endl;
+        //std::cout<<"erased "<< from<<(*itr)->val<<std::endl;
         itr=vertices[from]->adj.erase(itr);
 
       }else{
@@ -241,7 +241,7 @@ void Graph::remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges)
     }
     for(auto itr = vertices[to]->adj.begin();itr!=vertices[to]->adj.end();){
       if((*itr)->val == from){
-        std::cout<<"erased "<< to<<(*itr)->val<<std::endl;
+        //std::cout<<"erased "<< to<<(*itr)->val<<std::endl;
         itr=vertices[to]->adj.erase(itr);
 
       }else{

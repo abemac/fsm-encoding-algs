@@ -28,14 +28,15 @@ void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int siz
   }
   count();
   std::sort(cells.begin(),cells.end(),compareByCount);
-  // for(Cell* c : cells){
-  //   std::cout<<c->count<<" ("<<c->from<<" ↔ "<<c->to<<"),"<<"(";
-  //   for(int i : c->list){
-  //     std::cout<<i<<" ";
-  //   }
-  //   std::cout<<"\b)"<<std::endl;
-  //
-  // }
+  std::cout<<"Edge Counts:"<<std::endl;
+  for(Cell* c : cells){
+    std::cout<<c->count<<" ("<<c->from<<" ↔ "<<c->to<<"),"<<"(";
+    for(int i : c->list){
+      std::cout<<i<<" ";
+    }
+    std::cout<<"\b)"<<std::endl;
+
+  }
   remove(odd_cycles.size());
 
   std::cout<<"\n\nBreaking edges"<<std::endl;

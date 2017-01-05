@@ -26,12 +26,14 @@ void EC::calc_elem_cycles(){
     ++s;
   }
 
-  // for(std::vector<int>* v : cycles){
-  //   for(int i : *v){
-  //     std::cout<<i<<" ";
-  //   }
-  //   std::cout<<std::endl;
-  // }
+  int k=0;
+  for(std::vector<int>* v : cycles){
+    for(int i : *v){
+      std::cout<<i<<" ";
+    }
+    std::cout<<"sum:"<<sums[k]<<std::endl;
+    k++;
+  }
 
   std::cout<<"simplifying..."<<std::endl;
   simpflipy_cycles();
@@ -101,12 +103,17 @@ void EC::SAVE_CYCLE(){
         }
     if(w%2==1 && w>2)//yuan changed
       {
-    for (auto iw = stack.begin(); iw != stack.end(); ++iw)
+    for (auto iw = stack.begin(); iw != stack.end(); ++iw){
         cycle->push_back(*iw);
+        tmp_sum+=*iw;
+    }
 
     //std::cout <<s<< std::endl;
     cycle->push_back(s);
+    tmp_sum+=s;
     cycles.push_back(cycle);
+    sums.push_back(tmp_sum);
+    tmp_sum=0;
   }
     return;
 }

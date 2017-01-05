@@ -1,0 +1,95 @@
+
+finding odd cycles and edges to remove...
+
+
+input:
+1 2 4 
+0 2 3 4 
+0 1 3 4 
+1 2 4 
+0 1 2 3 
+--------------------------------------------------------------------------------
+
+
+Finding elementary cycles
+Progress (4 is done): 0
+Progress (4 is done): 0
+Progress (4 is done): 1
+Progress (4 is done): 2
+Progress (4 is done): 3
+Progress (4 is done): 4
+simplifying...
+simplifying (1/26)
+simplifying (2/25)
+simplifying (3/24)
+simplifying (4/23)
+simplifying (5/22)
+simplifying (6/21)
+simplifying (7/20)
+simplifying (8/19)
+simplifying (9/18)
+simplifying (10/17)
+simplifying (11/16)
+simplifying (12/15)
+simplifying (13/14)
+
+odd numbered cycles:
+0 1 2 0 
+0 1 2 3 4 0 
+0 1 3 2 4 0 
+0 1 3 4 2 0 
+0 1 4 0 
+0 1 4 3 2 0 
+0 2 1 3 4 0 
+0 2 3 1 4 0 
+0 2 4 0 
+1 2 3 1 
+1 2 4 1 
+1 3 4 1 
+2 3 4 2 
+--------------------------------------------------------------------------------
+Edge Counts:
+6 (0 â 1),(0 1 2 3 4 5 )
+6 (2 â 0),(0 3 5 6 7 8 )
+6 (2 â 3),(1 2 5 7 9 12 )
+6 (3 â 4),(1 3 5 6 11 12 )
+6 (4 â 0),(1 2 4 6 7 8 )
+6 (1 â 3),(2 3 6 7 9 11 )
+5 (1 â 2),(0 1 6 9 10 )
+5 (2 â 4),(2 3 8 10 12 )
+5 (1 â 4),(4 5 7 10 11 )
+
+
+Breaking edges
+modified odd cycles:
+0 X 1 X 2 X 0 
+0 X 1 X 2 X 3 X 4 0 
+0 X 1 3 X 2 4 0 
+0 X 1 3 X 4 2 X 0 
+0 X 1 4 0 
+0 X 1 4 X 3 X 2 X 0 
+0 X 2 X 1 3 X 4 0 
+0 X 2 X 3 1 4 0 
+0 X 2 4 0 
+1 X 2 X 3 1 
+1 X 2 4 1 
+1 3 X 4 1 
+2 X 3 X 4 2 
+deleted edges:
+0 1
+2 0
+2 3
+3 4
+1 2
+--------------------------------------------------------------------------------
+
+
+Encoding:
+0:1
+1:2
+2:4
+3:3
+4:0
+(3 bits)
+
+done

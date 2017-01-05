@@ -6,7 +6,7 @@
 
 void ETR::find_edges(std::string filePath){
   read_file(filePath);
-  std::cout<<"\nsimplified input:"<<std::endl;
+  std::cout<<"\ninput:"<<std::endl;
 
   for(auto i : adjList){
     for (auto j : i){
@@ -31,18 +31,7 @@ void ETR::find_edges(std::string filePath){
 
 }
 
-void ETR::rm_dups(std::list<int>& tmp,int current_state){
-  std::set<int> unique;
-  for(int i : tmp){
-    if(i!=current_state){
-      unique.insert(i);
-    }
-  }
-  tmp.clear();
-  for(int i : unique){
-      tmp.push_back(i);
-  }
-}
+
 
 
 
@@ -52,20 +41,20 @@ void ETR::rm_dups(std::list<int>& tmp,int current_state){
 void ETR::read_file(std::string& filePath){
   std::ifstream FILE(filePath);
   std::string str;
-  int count=0;
+
   while(std::getline(FILE,str)){
     std::list<int> tmp;
     int i=0;
     int lasti=0;
     for(;i<str.size();i++){
       if(str[i]==',' || i==str.size()-1){
-        int val=std::stoi(str.substr(lasti,i+1-lasti),nullptr,10)-1;
+        int val=std::stoi(str.substr(lasti,i+1-lasti),nullptr,10);
         tmp.push_back(val);
         lasti=i+1;
       }
     }
-    rm_dups(tmp,count);   //remove duplicates
-    ++count;
+
+
     adjList.push_back(tmp);
    }
    FILE.close();

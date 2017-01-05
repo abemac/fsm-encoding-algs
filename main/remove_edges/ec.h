@@ -26,6 +26,8 @@ private:
   void SAVE_CYCLE();
 
   void simpflipy_cycles();
+  std::vector<int> sums;
+  int tmp_sum=0;
 
 
 public:
