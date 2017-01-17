@@ -28,13 +28,14 @@ private:
   void count();
   void remove(int size);
   bool anyFalse(const std::vector<bool> & bools);
-
+  bool min_output;
 
 public:
   void remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size);
   std::vector<std::vector <unsigned int> > odd_cycles;
   std::vector<std::pair<int,int>* > deleted_edges;
 
+  RE(bool min_output_);
 };
 
 

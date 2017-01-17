@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <list>
+#include <set>
 class Graph{
 
 public:
@@ -38,32 +39,15 @@ private:
     std::vector<Node*> vertices;
     std::vector< std::vector<int> > weights;
 
-    struct Code{
-      unsigned long long val;
-      bool used;
-      Code(unsigned long long v){
-        val=v;
-        used=false;
-      }
-    };
-
-    struct CodeStruct{
-      std::vector<Code*> codes;
-    };
 
     unsigned long long getBestNextEncoding(unsigned long long current_enc);
-    void createCodeVector();
 
     std::vector<std::vector<unsigned long long> > src_file;
-    std::vector<bool> usedCodes;
-
-
-    std::vector< std::vector<CodeStruct*>* > codeStructs;
+    std::set<unsigned long long> usedCodes;
 
     unsigned long long numFlipFlops;
 
     //////////
-    std::vector<Code*> allCodes;
 
 
 };

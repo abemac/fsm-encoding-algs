@@ -4,6 +4,10 @@
 
 #include "re.h"
 
+RE::RE(bool min_output_){
+  min_output=min_output_;
+}
+
 void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int size){
 
   for(std::vector<int>* v : odd_cycles_){
@@ -28,28 +32,32 @@ void RE::remove_edges(const std::vector<std::vector<int>* >& odd_cycles_,int siz
   }
   count();
   std::sort(cells.begin(),cells.end(),compareByCount);
-  std::cout<<"Edge Counts:"<<std::endl;
-  for(Cell* c : cells){
-    std::cout<<c->count<<" ("<<c->from<<" ↔ "<<c->to<<"),"<<"(";
-    for(int i : c->list){
-      std::cout<<i<<" ";
-    }
-    std::cout<<"\b)"<<std::endl;
+  if(!min_output){
+    std::cout<<"Edge Counts:"<<std::endl;
+    for(Cell* c : cells){
+      std::cout<<c->count<<" ("<<c->from<<" ↔ "<<c->to<<"),"<<"(";
+      for(int i : c->list){
+        std::cout<<i<<" ";
+      }
+      std::cout<<"\b)"<<std::endl;
 
+    }
   }
   remove(odd_cycles.size());
 
   std::cout<<"\n\nBreaking edges"<<std::endl;
-  std::cout<<"modified odd cycles:"<<std::endl;
-  for(auto a : odd_cycles){
-    for(auto i : a){
-      if(i==-1){
-        std::cout<<"\033[1;31mX\033[0m ";
-      }else{
-      std::cout<<i<<" ";
+  if(!min_output){
+    std::cout<<"modified odd cycles:"<<std::endl;
+    for(auto a : odd_cycles){
+      for(auto i : a){
+        if(i==-1){
+          std::cout<<"\033[1;31mX\033[0m ";
+        }else{
+        std::cout<<i<<" ";
+        }
       }
+      std::cout<<std::endl;
     }
-    std::cout<<std::endl;
   }
 }
 

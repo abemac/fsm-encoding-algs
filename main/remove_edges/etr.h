@@ -17,12 +17,12 @@ private:
 
 
   void read_file(std::string& filePath);
-
+  bool min_output;
 public:
   void find_edges(std::string filePath);
   std::vector<std::list<int> > adjList;
   std::vector<std::pair<int,int>* > removed_edges;
-
+  ETR(bool min_output_);
 
 };
 

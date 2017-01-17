@@ -4,20 +4,26 @@
 #include "etr.h"
 
 
+ETR::ETR(bool min_output_){
+  min_output=min_output_;
+}
+
 void ETR::find_edges(std::string filePath){
   read_file(filePath);
-  std::cout<<"\ninput:"<<std::endl;
+  if(!min_output){
+    std::cout<<"\ninput:"<<std::endl;
 
-  for(auto i : adjList){
-    for (auto j : i){
-      std::cout<<j<<" ";
+    for(auto i : adjList){
+      for (auto j : i){
+        std::cout<<j<<" ";
+      }
+      std::cout<<std::endl;
     }
-    std::cout<<std::endl;
+    std::cout<<"--------------------------------------------------------------------------------"<<std::endl;
   }
-  std::cout<<"--------------------------------------------------------------------------------"<<std::endl;
-  EC ec = EC(adjList);
+  EC ec = EC(adjList,min_output);
   ec.calc_elem_cycles();
-  RE re;
+  RE re(min_output);
   re.remove_edges(ec.cycles,adjList.size());
 
   //re.odd_cycles to get odd cycles now

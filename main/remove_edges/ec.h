@@ -30,19 +30,30 @@ private:
   std::vector<std::vector<int>* > simp_cycles;
   int in_bank(std::vector<int>* test);
   bool equivalent(std::vector<int>* a,std::vector<int>* b);
-  void emptyBank(int start);
-  std::vector<int> sums;
+  //void emptyBank(int start);
   std::vector<bool> flagged;
-  int tmp_sum=0;
+  bool min_output;
 
   static bool compareBySize(std::vector<int>* a,std::vector<int>* b){
-    return a->size()<b->size();
+    if(a->size() == b->size()){
+      int sum_a=0;
+      for(int i: *a){
+        sum_a+=i;
+      }
+      int sum_b=0;
+      for(int i: *b){
+        sum_b+=i;
+      }
+      return sum_a < sum_b;
+    }else{
+      return a->size()<b->size();
+    }
   }
 
 
 public:
   void calc_elem_cycles();
-  EC(const std::vector<std::list<int> > & A_);
+  EC(const std::vector<std::list<int> > & A_,bool min_output_);
   std::vector<std::vector<int>* > cycles;
 
 

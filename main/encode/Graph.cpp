@@ -59,7 +59,32 @@ Graph::Graph(const std::vector<std::list<int> >& adjList){
 }
 
 void Graph::encode(){
-  createCodeVector();
+  numFlipFlops=0;
+  unsigned long long count=1;
+
+  while(count<vertices.size()){
+    numFlipFlops++;
+    count<<=1;//multiply by two
+  }
+  int max_weight=0;
+  for(int i=0;i<weights.size();i++){
+    int tmp_weight=0;
+    for(int t : weights[i]){
+      tmp_weight+=t;
+    }
+
+    if(tmp_weight>max_weight){
+      max_weight=tmp_weight;
+    //  std::cout<<i<<" "<<max_weight<<std::endl;
+    }
+  }
+  //  std::cout<<max_weight<<std::endl;
+  //  std::cout<<numFlipFlops<<std::endl;
+  if(max_weight>numFlipFlops){
+    count<<=(max_weight-numFlipFlops);
+    numFlipFlops=max_weight;
+  }
+
   for(Node * v : vertices){
     v->visited=false;
   }
@@ -88,7 +113,7 @@ void Graph::encode(){
   vertices[loc]->visited=true;
   vertices[loc]->enc=0;
   vertices[loc]->visited=true;
-  allCodes[0]->used=true;
+  usedCodes.insert(0);
 
   //**********add outer loop in case disconnected
 
@@ -127,102 +152,31 @@ void Graph::encode(){
 
 unsigned long long Graph::getBestNextEncoding(unsigned long long current_enc){
   unsigned long long distanceAway=1;
-  while(distanceAway <= numFlipFlops){
-    for(Code * c : codeStructs[current_enc]->operator[](distanceAway)->codes){
-      if(c->used==false){
-        c->used=true;
-        return c->val;
-      }
-    }
-    distanceAway++;
+  std::list<unsigned long long> last;
+  last.push_back(current_enc);
 
+  while(last.size()!=0){
+    unsigned long long ref_enc=last.back();
+    last.pop_back();
+    int shamt=0;
+    unsigned long long one=1;
+    while(shamt <numFlipFlops){
+      unsigned long long enc =(one<<shamt)^ref_enc;
+      if(usedCodes.count(enc)==0){
+        usedCodes.insert(enc);
+        return enc;
+      }else{
+        last.push_back(enc);
+      }
+      ++shamt;
+    }
   }
+
+
+
   return -1;
 }
 
-void Graph::createCodeVector(){
-  numFlipFlops=0;
-  unsigned long long count=1;
-
-  while(count<vertices.size()){
-    numFlipFlops++;
-    count<<=1;//multiply by two
-  }
-  int max_weight=0;
-  for(int i=0;i<weights.size();i++){
-    int tmp_weight=0;
-    for(int t : weights[i]){
-      tmp_weight+=t;
-    }
-
-    if(tmp_weight>max_weight){
-      max_weight=tmp_weight;
-    //  std::cout<<i<<" "<<max_weight<<std::endl;
-    }
-  }
-  //  std::cout<<max_weight<<std::endl;
-  //  std::cout<<numFlipFlops<<std::endl;
-  if(max_weight>numFlipFlops){
-    count<<=(max_weight-numFlipFlops);
-    numFlipFlops=max_weight;
-  }
-
-  usedCodes=std::vector<bool>(count);
-  for(unsigned long long j=0;j<usedCodes.size();j++){
-    usedCodes[j]=false;
-  }
-  allCodes=std::vector<Code*>(count);
-  for(unsigned long long i =0; i<count;i++){
-    allCodes[i]=new Code(i);
-  }
-  codeStructs=std::vector< std::vector<CodeStruct*>* >();
-
-  for(unsigned long long num=0;num<count;num++){
-    for(unsigned long long j=0;j<usedCodes.size();j++){
-      usedCodes[j]=false;
-    }
-    std::vector<CodeStruct*>* codeLevel_current= new std::vector<CodeStruct*>;
-    CodeStruct* cl1=new CodeStruct();
-    cl1->codes.push_back(allCodes[num]);
-    usedCodes[num]=true;
-    codeLevel_current->push_back(cl1);
-
-    unsigned long long workingVal=0;
-    unsigned long long baseVal=0;
-    while(codeLevel_current->size()<numFlipFlops+1){
-      CodeStruct * prev = codeLevel_current->back();
-      CodeStruct * next = new CodeStruct();
-      for(Code * c : prev->codes){
-        baseVal=c->val;
-        for(unsigned long long i=0;i<numFlipFlops;i++){
-          workingVal=baseVal ^ (1<<i);
-          if(!usedCodes[workingVal]){
-            next->codes.push_back(allCodes[workingVal]);
-            usedCodes[workingVal]=true;
-          }
-        }
-      }
-
-      codeLevel_current->push_back(next);
-
-    }
-    codeStructs.push_back(codeLevel_current);
-  }
-
-  // for(std::vector<CodeStruct*> * v : codeStructs){
-  //   for(CodeStruct* cl: *v ){
-  //     for(Code * c : cl->codes){
-  //
-  //       std::bitset<4> b (c->val);
-  //       std::cout<<b<<" ";
-  //     }
-  //     std::cout<<std::endl;
-  //   }
-  //   std::cout<<std::endl;
-  // }
-
-
-}
 
 void Graph::remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges){
   for(std::pair<int,int>* pp : deleted_edges){
@@ -324,6 +278,7 @@ void Graph::write_to_dot_result(){
   std::ofstream FILE;
   std::string path ="result.dot";
   FILE.open(path);
+  unsigned long long one=1;
   FILE<<"graph fsm {\n";
   std::vector< std::vector<bool> > added;
   for(int k=0;k<vertices.size();k++){
@@ -339,12 +294,12 @@ void Graph::write_to_dot_result(){
         added[adj->val][n->val]=true;
         FILE<<"\""<<(n->val)<<"\\n(";
         for(int i = numFlipFlops-1; i>=0;i--){
-          unsigned int x = ((n->enc) & (1<<i))>>i;
+          unsigned long x = ((n->enc) & (one<<i))>>i;
           FILE<<x;
         }
         FILE<<")\"--\""<<adj->val<<"\\n(";
         for(int i = numFlipFlops-1; i>=0;i--){
-          unsigned int x = ((adj->enc) & (1<<i))>>i;
+          unsigned long x = ((adj->enc) & (one<<i))>>i;
           FILE<<x;
         }
         FILE<<")\";\n";

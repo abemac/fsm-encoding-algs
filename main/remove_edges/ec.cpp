@@ -1,8 +1,10 @@
 #include "ec.h"
 
-EC::EC(const std::vector<std::list<int> > &A_){
+EC::EC(const std::vector<std::list<int> > &A_,bool min_output_){
   A=A_;
+  min_output=min_output_;
   init();
+
 }
 
 
@@ -26,7 +28,8 @@ void EC::calc_elem_cycles(){
     ++s;
   }
 
-  std::sort(cycles.begin(),cycles.end(),compareBySize);
+  //std::cout<<"Sorting cycles"<<std::endl;
+  //std::sort(cycles.begin(),cycles.end(),compareBySize);
   //  int k=0;
   // std::cout<<"unsimplified cycles"<<std::endl;
   // for(std::vector<int>* v : cycles){
@@ -37,15 +40,18 @@ void EC::calc_elem_cycles(){
   //   k++;
   // }
 
-  std::cout<<"simplifying..."<<std::endl;
-  simpflipy_cycles();
-  std::cout<<"\nodd numbered cycles:"<<std::endl;
-  for(std::vector<int>* v : cycles){
-    for(int i : *v){
-      std::cout<<i<<" ";
+  //std::cout<<"simplifying..."<<std::endl;
+  //simpflipy_cycles();
+
+  if(!min_output){
+    std::cout<<"\nodd numbered cycles:"<<std::endl;
+    for(std::vector<int>* v : cycles){
+      for(int i : *v){
+        std::cout<<i<<" ";
+      }
+      std::cout<<std::endl;
     }
-    std::cout<<std::endl;
-  }
+   }
   std::cout<<"--------------------------------------------------------------------------------"<<std::endl;
 
 }
@@ -107,15 +113,11 @@ void EC::SAVE_CYCLE(){
       {
     for (auto iw = stack.begin(); iw != stack.end(); ++iw){
         cycle->push_back(*iw);
-        tmp_sum+=*iw;
     }
 
     //std::cout <<s<< std::endl;
     cycle->push_back(s);
-    tmp_sum+=s;
     cycles.push_back(cycle);
-    sums.push_back(tmp_sum);
-    tmp_sum=0;
   }
     return;
 }
@@ -150,29 +152,29 @@ void EC::simpflipy_cycles(){
         bank.erase(bank.begin()+index);
       }
     }
-    if(bank.size()>2){
-      emptyBank(0);
-    }
+    //  if(bank.size()>2){
+    //    emptyBank(0);
+    //  }
 
   }
   cycles=simp_cycles;
 
 }
-void EC::emptyBank(int start){
-  for(int i=start;i<cycles.size();i++){
-    if(!flagged[i]){
-      int index =in_bank(cycles[i]);
-      if(index!=-1){
-        simp_cycles.push_back(cycles[i]);
-        flagged[i]=true;
-        bank.erase(bank.begin()+index);
-      }
-    }
-  }
-  if(bank.size()!=0){
-    throw std::runtime_error("Bank size should be zero");
-  }
-}
+// void EC::emptyBank(int start){
+//   for(int i=start;i<cycles.size();i++){
+//     if(!flagged[i]){
+//       int index =in_bank(cycles[i]);
+//       if(index!=-1){
+//         simp_cycles.push_back(cycles[i]);
+//         flagged[i]=true;
+//         bank.erase(bank.begin()+index);
+//       }
+//     }
+//   }
+//   if(bank.size()!=0){
+//     throw std::runtime_error("Bank size should be zero");
+//   }
+// }
 int EC::in_bank(std::vector<int>* test){
   for(int i=0;i<bank.size();i++){
     if(equivalent(test,bank[i])){
