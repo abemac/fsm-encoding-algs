@@ -32,7 +32,7 @@ public:
   void build_test_graph();
   void encode();
   void remove_edges(const std::vector<std::pair<int,int>* >& deleted_edges);
-  void write_to_dot_result();
+  void write_to_dot_result(std::string& name);
 
 
 private:

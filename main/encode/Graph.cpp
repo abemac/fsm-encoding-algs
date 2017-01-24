@@ -274,9 +274,11 @@ void Graph::sortByWeight(std::vector<Node*>& v){
   }
 }
 
-void Graph::write_to_dot_result(){
+void Graph::write_to_dot_result(std::string& name){
   std::ofstream FILE;
-  std::string path ="result.dot";
+  std::string path ="result-graph-";
+  path.append(name);
+  path.append(".dot");
   FILE.open(path);
   unsigned long long one=1;
   FILE<<"graph fsm {\n";

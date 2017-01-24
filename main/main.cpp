@@ -26,7 +26,13 @@ int main (int argc, char* argv[]){
   Graph g = Graph(etr.adjList);
   g.remove_edges(etr.removed_edges);
   g.encode();
-  g.write_to_dot_result();
+  std::string graphname;
+  if(argc>=4){
+    graphname=argv[3];
+  }else{
+    graphname="";
+  }
+  g.write_to_dot_result(graphname);
   std::cout<<"\ndone"<<std::endl;
 
 }
