@@ -37,13 +37,14 @@ int main (int argc, char* argv[]){
   //   }
   //   std::cout<<std::endl;
   // }
-  filePath.pop_back();
-  filePath.pop_back();
-  filePath.pop_back();
-  filePath.pop_back();
-  filePath.append("_und.csv");
-  std::string pre="undirected_benchmarks";
-  filePath= pre + filePath.substr(10,filePath.size()-10);
+  // filePath.pop_back();
+  // filePath.pop_back();
+  // filePath.pop_back();
+  // filePath.pop_back();
+  // filePath.append("_und.csv");
+  // std::string pre="other";
+  //filePath= pre + filePath.substr(10,filePath.size()-10);
+  filePath.append("u");
   writeFile(filePath);
 }
 
@@ -68,7 +69,7 @@ void readFile(std::string& filePath){
     int lasti=0;
     for(;i<str.size();i++){
       if(str[i]==',' || i==str.size()-1){
-        int val=std::stoi(str.substr(lasti,i+1-lasti),nullptr,10)-1;
+        int val=std::stoi(str.substr(lasti,i+1-lasti),nullptr,10);
         tmp.insert(val);
         lasti=i+1;
       }
